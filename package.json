@@ -3,17 +3,21 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
+    "nav": "vuepress nav docs -f",
     "dev": "vuepress dev docs --temp .temp",
     "build": "vuepress build docs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "bash deploy.sh"
   },
   "devDependencies": {
+    "@vuepress/plugin-back-to-top": "^1.9.9",
+    "@vuepress/plugin-medium-zoom": "^1.9.9",
     "vuepress": "^1.9.9",
     "vuepress-plugin-auto-sidebar": "^2.3.2"
   },
   "dependencies": {
     "@vssue/api-github-v4": "^1.4.7",
+    "@vssue/vuepress-plugin-vssue": "^1.4.8",
     "moment": "^2.29.4"
   }
 }

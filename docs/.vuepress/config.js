@@ -1,7 +1,9 @@
 const moment = require("moment");
+const nav = require("./nav.js");
 const { APP_CLIENT_ID, APP_CLIENT_SECRET } = process.env;
 
 module.exports = {
+  base: "/blog/",
   locales: {
     // 键名是该语言所属的子路径
     // 作为特例，默认语言可以使用 '/' 作为其路径。
@@ -18,40 +20,55 @@ module.exports = {
   },
   themeConfig: {
     logo: "/assets/img/favicon.ico",
-    nav: [
-      { text: "首页", link: "/" },
-      { text: "关于", link: "/about" },
-      { text: "其他", link: "https://google.com" },
-      {
-        text: "Languages",
-        ariaLabel: "Language Menu",
-        items: [
-          { text: "Chinese", link: "/language/chinese/" },
-          { text: "Japanese", link: "/language/japanese/" },
-        ],
-      },
-    ],
     displayAllHeaders: true,
-    sidebar: "auto",
     smoothScroll: true,
-    lastUpdated: "最后更新于：",
+    lastUpdated: "最后更新于",
+    nav,
   },
   plugins: {
-    "vueprss-plugin-auto-sidebar": {},
+    "vuepress-plugin-auto-sidebar": {
+      sort: {
+        mode: "asc",
+        readmeFirst: true,
+        readmeFirstForce: false,
+      },
+      title: {
+        mode: "titlecase",
+      },
+      sidebarDepth: 1,
+      collapse: {
+        open: false,
+        collapseList: [],
+        uncollapseList: [],
+      },
+      ignore: [
+        // 忽略 `/menu3/menu3-3/` 目录下以 `ignore-` 开头的文件
+        {
+          menu: "/",
+          regex: "ignore-*",
+        },
+      ],
+      removeEmptyGroup: true,
+      git: {
+        trackStatus: "all",
+      },
+    },
     "@vuepress/last-updated": {
       transformer: (timestamp, lang) => {
         moment.locale(lang);
-        return moment(timestamp).format("YYYY-MM-DD hh:mm:ss");
+        return moment(timestamp).format("YYYY-MM-DD HH:mm:ss");
       },
     },
-    "@vssue/api-github-v4": {
+    "@vssue/vuepress-plugin-vssue": {
       platform: "github-v4",
       owner: "Yu-edge",
-      repo: "docs",
+      repo: "blog",
       clientId: APP_CLIENT_ID,
       clientSecret: APP_CLIENT_SECRET, // 只有在使用某些平台时需要
       autoCreateIssue: true,
     },
+    "@vuepress/back-to-top": true,
+    "@vuepress/medium-zoom": true,
   },
   head: [
     ["link", { rel: "icon", href: "/favicon.ico" }],
